@@ -16,6 +16,8 @@ NAME:
 DESCRIPTION:
   utility for manager rabbit mq.
 COMMANDS:
+  describe-queue -> describe queue.
+                 Ex: mrabbit -h [HOST] -u [USERNAME] -p [PASSWORD] describe-queue [VHOST] [NAME THE QUEUE]
   purge-queue -> purge messages the queue.
                  Ex: mrabbit -h [HOST] -u [USERNAME] -p [PASSWORD] purge-queue [VHOST] [NAME THE QUEUE]
   list-queues -> list queues.
@@ -84,6 +86,14 @@ func main() {
 				fmt.Printf("SUCESS REMOVE QUEUE: %s\n", queue.Name)
 			}
 		}
+	} else if os.Args[7] == "describe-queue" {
+		queue, err := rmqc.GetQueue(os.Args[8], os.Args[9])
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("NAME: %s\n", queue.Name)
+		fmt.Printf("CONSUMERS QUANTITY: %v\n", queue.Consumers)
+		fmt.Printf("MESSAGES: %v\n", queue.Messages)
 	}
 
 }
